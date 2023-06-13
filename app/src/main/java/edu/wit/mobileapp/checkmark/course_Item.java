@@ -1,8 +1,8 @@
 package edu.wit.mobileapp.checkmark;
 
 public class course_Item {
-    String courseName;
-    int courseID;
+    private String courseName;
+    private int courseID;
 
     public course_Item(String courseName, int courseID) {
         this.courseName = courseName;
