@@ -2,6 +2,7 @@ package edu.wit.mobileapp.checkmark;
 
 import android.content.Context;
 import android.text.Layout;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class courseAdapter extends RecyclerView.Adapter<courseAdapter.courseView
         this.context = context;
     }
 
-    public static class courseViewHolder extends RecyclerView.ViewHolder {
+    public static class courseViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         TextView courseName;
         TextView courseID;
 
@@ -42,6 +43,13 @@ public class courseAdapter extends RecyclerView.Adapter<courseAdapter.courseView
             courseName = itemView.findViewById(R.id.courseTextView);
             courseID = itemView.findViewById(R.id.courseIDTextView);
             itemView.setOnClickListener(v -> onItemClickListener.onClick(getAdapterPosition()));
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(getAdapterPosition(), 0, 0, "EDIT");
+            menu.add(getAdapterPosition(), 1, 0, "DELETE");
         }
     }
 
