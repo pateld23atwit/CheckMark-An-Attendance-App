@@ -1,6 +1,8 @@
 package edu.wit.mobileapp.checkmark;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,9 +14,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
@@ -32,6 +39,8 @@ public class student extends AppCompatActivity {
     private long course_ID;
     private myCalendar calendar;
     private TextView subtitle;
+    public static String barcodeID;
+    FloatingActionButton scanButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +65,19 @@ public class student extends AppCompatActivity {
         recyclerView.setAdapter(studentAdapter);
         studentAdapter.setOnItemClickListener(position->changeStatus(position));
         loadStatusData();
+
+        scanButton = findViewById(R.id.scanButtonXML);
+        scanButton.setOnClickListener(v -> {
+            String myApp = "TESTING!";
+            Log.v(myApp, "Status scan button clicked");
+
+            IntentIntegrator intentIntegrator = new IntentIntegrator(this);
+            intentIntegrator.setBeepEnabled(true);
+            intentIntegrator.setOrientationLocked(true);
+            intentIntegrator.setCaptureActivity(Capture.class);
+            intentIntegrator.initiateScan();
+        });
+
     }
 
     private void loadData() {
@@ -184,6 +206,8 @@ public class student extends AppCompatActivity {
         }
 
         Intent intent = new Intent(this, sheetListActivity.class);
+        intent.putExtra("courseName", courseName);
+        intent.putExtra("courseID", courseID);
         intent.putExtra("course_ID", course_ID);
         intent.putExtra("idArr", idArr);
         intent.putExtra("numArr", numArr);
@@ -212,6 +236,49 @@ public class student extends AppCompatActivity {
         diag.setListener2((studentfName, studentlName, studentID)->addStudent(studentfName, studentlName, studentID));
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        String myApp = "TESTING!";
+        Log.v(myApp, "Barcode onActivityResult");
+
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if (intentResult.getContents() != null) {
+            barcodeID = intentResult.getContents();
+
+            for (student_item student : studentItems) {
+                String id = student.getStudentID();
+                Log.v(myApp, "TEMPORARY student ID: " + id);
+
+                if (id.equalsIgnoreCase(barcodeID)) {
+                    Log.v(myApp, "Changing student status.");
+                    int position = studentItems.indexOf(student);
+//                    changeStatus(studentItems.indexOf(student));
+                    student.setStatus("P"); 
+                    studentAdapter.notifyItemChanged(position);
+                    return;
+                }
+            }
+
+            Log.v(myApp, barcodeID);
+
+        } else {
+            barcodeID = "Scan Error";
+        }
+        Log.v(myApp, "Barcode scanned: " + barcodeID);
+    }
+
+    public static String getScannedID() {
+        if (barcodeID.equals("Scan Error")) {
+            return "Scan Error";
+        }
+        else {
+            return barcodeID;
+        }
+    }
+
     private void addStudent(String studentfName, String studentlName, String studentID) {
         Log.v(myApp, "Adding Student");
 
@@ -226,13 +293,6 @@ public class student extends AppCompatActivity {
 
         long student_ID = databaseHelper.addStudent(course_ID, studentID, studentfName, studentlName);
         String number = String.valueOf(studentItems.size()+1);;
-
-//        if (studentItems.size() == 0) {
-//            number = String.valueOf(studentItems.size()+1);
-//        }
-//        else {
-//            number = String.valueOf(studentItems.size());
-//        }
 
         student_item studentItem = new student_item(student_ID, number, studentfName, studentlName, studentID);
         studentItems.add(studentItem);

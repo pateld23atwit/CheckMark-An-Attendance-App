@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,8 +11,19 @@
     <include
         android:id="@+id/toolbarStudent"
         layout="@layout/toolbar"/>
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/scanButtonXML"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:layout_margin="24dp"
+    android:src="@drawable/ic_baseline_scan_24" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/studentRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarStudent" />
+</RelativeLayout>
+
