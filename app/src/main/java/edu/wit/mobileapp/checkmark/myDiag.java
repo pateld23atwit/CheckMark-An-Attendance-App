@@ -34,8 +34,15 @@ public class myDiag extends DialogFragment {
     private String studentlName;
     private String studentID;
     private String barcodeID;
+    private String courseName;
+    private String courseID;
 
     public myDiag() {
+    }
+
+    public myDiag(String courseName, String courseID) {
+        this.courseName = courseName;
+        this.courseID = courseID;
     }
 
     public myDiag(String firstName, String lastName, String studentID) {
@@ -87,10 +94,16 @@ public class myDiag extends DialogFragment {
         EditText fNameEditText = view.findViewById(R.id.studentfNameEditDiag);
         EditText lNameEditText = view.findViewById(R.id.studentlNameEditDiag);
         EditText IDEditText = view.findViewById(R.id.studentIDEditDiag);
-
         fNameEditText.setText(studentfName);
         lNameEditText.setText(studentlName);
         IDEditText.setText(studentID);
+
+        TextView fNameEmptyError = view.findViewById(R.id.fNameEmptyErrorTextView);
+        TextView lNameEmptyError = view.findViewById(R.id.lNameEmptyErrorTextView);
+        TextView studentIDEmptyError = view.findViewById(R.id.StudentIDEmptyErrorTextView);
+        fNameEmptyError.setVisibility(View.GONE);
+        lNameEmptyError.setVisibility(View.GONE);
+        studentIDEmptyError.setVisibility(View.GONE);
 
         cancelBtn = view.findViewById(R.id.cancelAddStudentButton);
         updateBtn = view.findViewById(R.id.addStudentButton);
@@ -99,14 +112,42 @@ public class myDiag extends DialogFragment {
         cancelBtn.setOnClickListener(v -> dismiss());
 
         updateBtn.setOnClickListener(v -> {
+            boolean missingFields = false;
             String myApp = "TESTING!";
             Log.v(myApp, "Student update button clicked");
 
-            String fName = fNameEditText.getText().toString();
-            String lName = lNameEditText.getText().toString();
-            String studentID = IDEditText.getText().toString();
-            listener2.onClick(fName, lName, studentID);
-            dismiss();
+            if (fNameEditText.getText().toString().isEmpty()) {
+                missingFields = true;
+                fNameEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                fNameEmptyError.setVisibility(View.GONE);
+            }
+            if (lNameEditText.getText().toString().isEmpty()) {
+                missingFields = true;
+                lNameEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                lNameEmptyError.setVisibility(View.GONE);
+            }
+            if (IDEditText.getText().toString().isEmpty()) {
+                missingFields = true;
+                studentIDEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                studentIDEmptyError.setVisibility(View.GONE);
+            }
+            if (!missingFields) {
+                fNameEmptyError.setVisibility(View.GONE);
+                lNameEmptyError.setVisibility(View.GONE);
+                studentIDEmptyError.setVisibility(View.GONE);
+
+                String fName = fNameEditText.getText().toString();
+                String lName = lNameEditText.getText().toString();
+                String studentID = IDEditText.getText().toString();
+                listener2.onClick(fName, lName, studentID);
+                dismiss();
+            }
         });
         return builder.create();
     }
@@ -127,16 +168,38 @@ public class myDiag extends DialogFragment {
 
         EditText course_edit = view.findViewById(R.id.courseNameEditDiag);
         EditText courseID_edit = view.findViewById(R.id.courseIDEditDiag);
+        course_edit.setText(courseName);
+        courseID_edit.setText(courseID);
 
-        course_edit.setHint("Course Name");
-        courseID_edit.setHint("Course ID#");
+        TextView CourseNameEmptyError = view.findViewById(R.id.CourseNameEmptyErrorTextView);
+        TextView CourseIDEmptyError = view.findViewById(R.id.CourseIDEmptyErrorTextView);
+        CourseNameEmptyError.setVisibility(View.GONE);
+        CourseIDEmptyError.setVisibility(View.GONE);
 
         cancelBtn.setOnClickListener(v -> dismiss());
         updateBtn.setOnClickListener(v -> {
-            String courseName = course_edit.getText().toString();
-            String courseID = courseID_edit.getText().toString();
-            listener.onClick(courseName, courseID);
-            dismiss();
+            boolean missingFields = false;
+
+            if (course_edit.getText().toString().isEmpty()) {
+                missingFields = true;
+                CourseNameEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                CourseNameEmptyError.setVisibility(View.GONE);
+            }
+            if (courseID_edit.getText().toString().isEmpty()) {
+                missingFields = true;
+                CourseIDEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                CourseIDEmptyError.setVisibility(View.GONE);
+            }
+            if (!missingFields) {
+                String courseName = course_edit.getText().toString();
+                String courseID = courseID_edit.getText().toString();
+                listener.onClick(courseName, courseID);
+                dismiss();
+            }
         });
         return builder.create();
     }
@@ -157,18 +220,42 @@ public class myDiag extends DialogFragment {
 
         EditText course_edit = view.findViewById(R.id.courseNameEditDiag);
         EditText courseID_edit = view.findViewById(R.id.courseIDEditDiag);
-
         course_edit.setHint("Course Name");
         courseID_edit.setHint("Course ID#");
 
+        TextView CourseNameEmptyError = view.findViewById(R.id.CourseNameEmptyErrorTextView);
+        TextView CourseIDEmptyError = view.findViewById(R.id.CourseIDEmptyErrorTextView);
+        CourseNameEmptyError.setVisibility(View.GONE);
+        CourseIDEmptyError.setVisibility(View.GONE);
+
         cancel.setOnClickListener(v -> dismiss());
         add.setOnClickListener(v -> {
-            String courseName = course_edit.getText().toString();
-            String courseID = courseID_edit.getText().toString();
+            boolean missingFields = false;
 
-            listener.onClick(courseName, courseID);
-//            listener.onClick(courseName, courseID);
-            dismiss();
+            if (course_edit.getText().toString().isEmpty()) {
+                missingFields = true;
+                CourseNameEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                CourseNameEmptyError.setVisibility(View.GONE);
+            }
+            if (courseID_edit.getText().toString().isEmpty()) {
+                missingFields = true;
+                CourseIDEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                CourseIDEmptyError.setVisibility(View.GONE);
+            }
+            if (!missingFields) {
+                CourseNameEmptyError.setVisibility(View.GONE);
+                CourseIDEmptyError.setVisibility(View.GONE);
+
+                String courseName = course_edit.getText().toString();
+                String courseID = courseID_edit.getText().toString();
+
+                listener.onClick(courseName, courseID);
+                dismiss();
+            }
         });
         return builder.create();
     }
@@ -189,13 +276,20 @@ public class myDiag extends DialogFragment {
         TextView title = view.findViewById(R.id.titleDiag);
         title.setText("Add New Student");
 
+        TextView fNameEmptyError = view.findViewById(R.id.fNameEmptyErrorTextView);
+        TextView lNameEmptyError = view.findViewById(R.id.lNameEmptyErrorTextView);
+        TextView studentIDEmptyError = view.findViewById(R.id.StudentIDEmptyErrorTextView);
+        fNameEmptyError.setVisibility(View.GONE);
+        lNameEmptyError.setVisibility(View.GONE);
+        studentIDEmptyError.setVisibility(View.GONE);
+
         EditText fNameEditText = view.findViewById(R.id.studentfNameEditDiag);
         EditText lNameEditText = view.findViewById(R.id.studentlNameEditDiag);
         EditText IDEditText = view.findViewById(R.id.studentIDEditDiag);
-
         fNameEditText.setHint("First Name");
         lNameEditText.setHint("Last Name");
         IDEditText.setHint("W0000000");
+
         cancel = view.findViewById(R.id.cancelAddStudentButton);
         scanStudentID = view.findViewById(R.id.scanStudentIDButton);
         add = view.findViewById(R.id.addStudentButton);
@@ -227,17 +321,45 @@ public class myDiag extends DialogFragment {
 //        }
 
         add.setOnClickListener(v -> {
+            boolean missingFields = false;
 //            barcodeID = student.getScannedID();
 //            IDEditText.setText(barcodeID);
 
             String myApp = "TESTING!";
             Log.v(myApp, "Student add button clicked");
 
-            String fName = fNameEditText.getText().toString();
-            String lName = lNameEditText.getText().toString();
-            String studentID = IDEditText.getText().toString();
-            listener2.onClick(fName, lName, studentID);
+            if (fNameEditText.getText().toString().isEmpty()) {
+                missingFields = true;
+                fNameEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                fNameEmptyError.setVisibility(View.GONE);
+            }
+            if (lNameEditText.getText().toString().isEmpty()) {
+                missingFields = true;
+                lNameEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                lNameEmptyError.setVisibility(View.GONE);
+            }
+            if (IDEditText.getText().toString().isEmpty()) {
+                missingFields = true;
+                studentIDEmptyError.setVisibility(View.VISIBLE);
+            }
+            else {
+                studentIDEmptyError.setVisibility(View.GONE);
+            }
+            if (!missingFields) {
+                fNameEmptyError.setVisibility(View.GONE);
+                lNameEmptyError.setVisibility(View.GONE);
+                studentIDEmptyError.setVisibility(View.GONE);
+
+                String fName = fNameEditText.getText().toString();
+                String lName = lNameEditText.getText().toString();
+                String studentID = IDEditText.getText().toString();
+                listener2.onClick(fName, lName, studentID);
 //            dismiss();
+            }
         });
         return builder.create();
     }

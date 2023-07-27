@@ -28,6 +28,14 @@
             android:layout_height="wrap_content"
             android:hint="Course Name"
             android:layout_margin="8sp" />
+        <TextView
+            android:id="@+id/CourseNameEmptyErrorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Course Name Field cannot be empty!"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_dark" />
         <EditText
             android:id="@+id/courseIDEditDiag"
             android:layout_width="match_parent"
@@ -35,6 +43,15 @@
             android:hint="Course ID"
             android:layout_margin="8sp"
             android:inputType="number" />
+        <TextView
+            android:id="@+id/CourseIDEmptyErrorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Course ID Field cannot be empty!"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_dark"
+            android:paddingBottom="25dp"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

@@ -48,8 +48,8 @@ public class courseAdapter extends RecyclerView.Adapter<courseAdapter.courseView
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(getAdapterPosition(), 0, 0, "EDIT");
-            menu.add(getAdapterPosition(), 1, 0, "DELETE");
+            menu.add(getAdapterPosition(), 0, 0, "Edit");
+            menu.add(getAdapterPosition(), 1, 0, "Delete");
         }
     }
 

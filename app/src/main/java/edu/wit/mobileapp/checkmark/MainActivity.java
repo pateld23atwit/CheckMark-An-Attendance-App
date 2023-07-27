@@ -20,16 +20,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     FloatingActionButton addButton;
+    ImageView menuLogo;
     RecyclerView recyclerView;
     courseAdapter courseAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(courseAdapter);
         courseAdapter.setOnItemClickListener(position -> gotoItemActivity(position));
         setToolBar();
+
+
     }
 
     private void loadData() {
@@ -73,17 +78,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setToolBar() {
-
         toolbar = findViewById(R.id.toolbar);
         TextView title = toolbar.findViewById(R.id.toolbarTitle);
         TextView subtitle = toolbar.findViewById(R.id.subtitletoolbar);
         ImageButton backbtn = toolbar.findViewById(R.id.icon_back);
+        menuLogo = findViewById(R.id.toolbarLogo);
         ImageButton savebtn = toolbar.findViewById(R.id.icon_save);
 
-        title.setText("CheckMark");
+        title.setVisibility(View.GONE);
         subtitle.setVisibility(View.GONE);
         backbtn.setVisibility(View.INVISIBLE);
         savebtn.setVisibility(View.INVISIBLE);
+        menuLogo.setVisibility(View.VISIBLE);
     }
 
     private void gotoItemActivity(int position) {
@@ -133,7 +139,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showUpdateDialog(int position) {
-        myDiag dialog = new myDiag();
+        String course_Name = course_items.get(position).getCourseName();
+        String course_ID = course_items.get(position).getCourseID();
+
+        myDiag dialog = new myDiag(course_Name, course_ID);
         dialog.show(getSupportFragmentManager(), myDiag.courseUpdateDialog);
         dialog.setListener((courseName, courseID) -> updateCourse(position, courseName, courseID));
     }

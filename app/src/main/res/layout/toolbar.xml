@@ -19,7 +19,16 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_back"/>
+                android:src="@drawable/ic_back"
+                android:hapticFeedbackEnabled="true"/>
+
+            <ImageView
+                android:id="@+id/toolbarLogo"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/v2_checkmark_icon"
+                android:visibility="gone"></ImageView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

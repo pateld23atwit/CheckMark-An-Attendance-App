@@ -297,6 +297,9 @@ public class student extends AppCompatActivity {
         student_item studentItem = new student_item(student_ID, number, studentfName, studentlName, studentID);
         studentItems.add(studentItem);
         studentAdapter.notifyDataSetChanged();
+
+        Snackbar mySnackbar = Snackbar.make(recyclerView, studentfName + " " + studentlName + " added.", Snackbar.LENGTH_LONG);
+        mySnackbar.show();
         Log.v(myApp, "Student Added");
     }
 
