@@ -7,11 +7,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -129,29 +133,77 @@ public class student extends AppCompatActivity {
     }
 
     private void saveStatus() {
-        for (student_item student : studentItems) {
-            String status = student.getstudentStatus();
+        Button cancel;
+        Button confirm;
 
-//            Log.i("Attempt Save Status", "Status Value Before-1 = " + status);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            if (!status.equals("P")) {
-                status = "A";
-                student.setStatus(status);
-                studentAdapter.notifyItemChanged(studentAdapter.studentItems.indexOf(student));
+        View view = LayoutInflater.from(this).inflate(R.layout.savestatus_dialog, null);
+        builder.setView(view);
+
+        cancel = view.findViewById(R.id.cancelSaveStatus);
+        confirm = view.findViewById(R.id.SaveStatus);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        cancel.setOnClickListener(v -> dialog.dismiss());
+
+        confirm.setOnClickListener(v -> {
+            for (student_item student : studentItems) {
+                String status = student.getstudentStatus();
+
+                //            Log.i("Attempt Save Status", "Status Value Before-1 = " + status);
+
+                if (!status.equals("P")) {
+                    status = "A";
+                    student.setStatus(status);
+                    studentAdapter.notifyItemChanged(studentAdapter.studentItems.indexOf(student));
+                }
+                long value = databaseHelper.addStatus(student.getStudent_ID(), course_ID, calendar.getDate(), status);
+
+                //            Log.i("Attempt Save Status", "Status Value After-1 = " + status);
+
+                //            Log.i("Attempt Save Status", "Long value = : " + value);
+                //            Log.i("Attempt Save Status", "Status Error = : " + value);
+
+                if (value == -1) {
+                    //                Log.i("Attempt Save Status", "Status Value Before-2 = " + status);
+                    databaseHelper.updateStatus(student.getStudent_ID(), calendar.getDate(), status);
+                }
+                //            databaseHelper.updateStatus(student.getStudent_ID(), calendar.getDate(), status);
             }
-            long value = databaseHelper.addStatus(student.getStudent_ID(), course_ID, calendar.getDate(), status);
 
-//            Log.i("Attempt Save Status", "Status Value After-1 = " + status);
+            dialog.dismiss();
 
-//            Log.i("Attempt Save Status", "Long value = : " + value);
-//            Log.i("Attempt Save Status", "Status Error = : " + value);
+            Toast toast = Toast.makeText(this, "Attendance Saved.", Toast.LENGTH_SHORT);
+            toast.show();
+        });
 
-            if (value == -1) {
-//                Log.i("Attempt Save Status", "Status Value Before-2 = " + status);
-                databaseHelper.updateStatus(student.getStudent_ID(), calendar.getDate(), status);
-            }
-//            databaseHelper.updateStatus(student.getStudent_ID(), calendar.getDate(), status);
-        }
+
+//        for (student_item student : studentItems) {
+//            String status = student.getstudentStatus();
+//
+////            Log.i("Attempt Save Status", "Status Value Before-1 = " + status);
+//
+//            if (!status.equals("P")) {
+//                status = "A";
+//                student.setStatus(status);
+//                studentAdapter.notifyItemChanged(studentAdapter.studentItems.indexOf(student));
+//            }
+//            long value = databaseHelper.addStatus(student.getStudent_ID(), course_ID, calendar.getDate(), status);
+//
+////            Log.i("Attempt Save Status", "Status Value After-1 = " + status);
+//
+////            Log.i("Attempt Save Status", "Long value = : " + value);
+////            Log.i("Attempt Save Status", "Status Error = : " + value);
+//
+//            if (value == -1) {
+////                Log.i("Attempt Save Status", "Status Value Before-2 = " + status);
+//                databaseHelper.updateStatus(student.getStudent_ID(), calendar.getDate(), status);
+//            }
+////            databaseHelper.updateStatus(student.getStudent_ID(), calendar.getDate(), status);
+//        }
     }
 
     private void loadStatusData() {

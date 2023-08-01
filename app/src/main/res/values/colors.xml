@@ -11,4 +11,6 @@
     <color name="absent">#FF6B63</color>
     <color name="unmarked">#F2F5F2</color>
     <color name="button">#2986FF</color>
+    <color name="cancelBtn">#eb3148</color>
+    <color name="confirmBtn">#32CD30</color>
 </resources>
